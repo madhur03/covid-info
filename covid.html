@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<htm ng-app>
+<head>
+<title>Covid 19 tracker</title>
+<script data-require="angular.js@1.1.5" data-semver="1.1.5" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384- Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="./assets/css/home.css">
+<link rel="stylesheet" href="./assets/css/contribute.css">
+ 
+<link href='covid.css' rel='stylesheet'>
+</head>
+
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-custom bg-primary fixed-top">
+<div class="container">
+<a class="navbar-brand" href="#" style="color:white">COVID INFO</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data- target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria- expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav ml-auto">
+<li class="nav-item ">
+<a class="nav-link" href="index.html">Home</a>
+</li>
+<li class="nav-item">
+<a class="nav-link " href="store.html">Stores near me</a>
+</li>
+<li class="nav-item" >
+<a class="nav-link" href="covid 19.html">World Covid Tracker</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="contribute.html">Contribute</a>
+</li>
+
+
+</ul>
+ 
+</div>
+</div>
+</nav>
+
+
+
+
+
+<div ng-controller="slideShowController" class="imageslide" ng-switch='slideshow' ng-animate="'animate'">
+<div class="slider-content" ng-switch-when="1">
+<imgsrc="back2.jpg" width="100%" height="400px"/>
+</div>
+<div class="slider-content" ng-switch-when="2">
+<imgsrc="back3.jpg" width="100%" height="400px"/>
+</div>
+<div class="slider-content" ng-switch-when="3">
+<imgsrc="back4.jpg" width="100%" height="400px"/>
+</div>
+<div class="slider-content" ng-switch-when="4">
+<imgsrc="back1.jpg" width="100%" height="400px"/>
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="con">
+<h1 class="heading">Covid 19 Tracker Live</h1>
+<div class="inputbox">
+<input class="text-success form-control input rounded-0" type="text" class="input" placeholder="Enter country name..."/><br><br>
+ 
+<div class="button">search</div>
+</div>
+<div class="tit"><div class="title"><span style="color:white;">Country</span></div></div>
+<div class="confirmbox">
+<div class="title">Confirmed Cases</div>
+<div class="count confirm">000000</div>
+</div>
+<div class="activebox">
+<div class="title">Active Cases</div>
+<div class="count active">000000</div>
+</div>
+<div class="deathbox">
+<div class="title">Deaths</div>
+<div class="count death">000000</div>
+</div>
+<div class="recoverbox">
+<div class="title">Recovered</div>
+<div class="count recover">000000</div>
+</div>
+</div>
+<div id="footer">
+<p align="center">VIT STUDENT Web Design,&copy;Deepak Kumar,MadhurPatidar&Rohan Pal </p>
+</div>
+<script>
+
+
+
+
+var button = document.querySelector(".button"); button.addEventListener('click',getdata);
+ 
+async function getdata(){
+var input = document.querySelector(".input");
+var confirm = document.querySelector(".confirm"); var active = document.querySelector(".active"); var death = document.querySelector(".death");
+var recover = document.querySelector(".recover"); var title = document.querySelector(".title")
+var country = input.value; if(country == ""){
+alert("Pls input correct value")
+}
+try{
+const res = await fetch('https://covid19.mathdro.id/api/countries/'+ country) const data = await res.json()
+confirm.innerHTML = data.confirmed.value; death.innerHTML = data.deaths.value; recover.innerHTML = data.recovered.value; active.innerHTML = parseInt(data.confirmed.value- (data.recovered.value + data.deaths.value)); title.innerHTML = input.value.toUpperCase();; input.value = "";
+}
+catch(e){
+alert("Country not found") input.value ="";
+}
+}
+window.onload = async function(){
+ 
+var confirm = document.querySelector(".confirm"); var active = document.querySelector(".active"); var death = document.querySelector(".death");
+var recover = document.querySelector(".recover"); var title = document.querySelector(".title")
+const res = await fetch('https://covid19.mathdro.id/api') const data = await res.json()
+confirm.innerHTML = data.confirmed.value; death.innerHTML = data.deaths.value; recover.innerHTML = data.recovered.value; active.innerHTML = parseInt(data.confirmed.value- (data.recovered.value + data.deaths.value)); title.innerHTML = "WORLD";
+}
+
+
+
+
+function slideShowController($scope, $timeout) { var slidesInSlideshow = 4;
+var slidesTimeIntervalInMs = 4000;
+
+
+$scope.slideshow = 1; var slideTimer =
+$timeout(function interval() {
+$scope.slideshow = ($scope.slideshow % slidesInSlideshow) + 1; slideTimer = $timeout(interval, slidesTimeIntervalInMs);
+}, slidesTimeIntervalInMs);
+
+}
+
+
+</script>
+ 
+</body>
+</html> 
